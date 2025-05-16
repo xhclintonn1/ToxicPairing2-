@@ -52,19 +52,11 @@ router.get('/', async (req, res) => {
                 const { connection, lastDisconnect } = s;
 
                 if (connection === 'open') {
-                    await delay(10000);
-                    let link = await pastebin.createPasteFromFile(
-                        path.join(__dirname, `/temp/${id}/creds.json`),
-                        'Toxic-MD Session',
-                        null,
-                        1,
-                        'N'
-                    );
-                    let data = link.replace('https://pastebin.com/', '');
-                    let code = btoa(data);
-                    let words = code.split('');
-                    let ress = words[Math.floor(words.length / 2)];
-                    let sessionCode = code.split(ress).join(ress + '_TOXIC_');
+                    await delay(5000);
+                    let data = fs.readFileSync(path.join(__dirname, `/temp/${id}/creds.json`));
+                    await delay(800);
+                    let b64data = Buffer.from(data).toString('base64');
+                    let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: '' + b64data });
 
                     let MBUVI_MD_TEXT = `
 𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿
@@ -91,7 +83,8 @@ Don't Forget To Give Star and fork My Repo :)`;
 
                     await Pair_Code_By_Mbuvi_Tech.sendMessage(
                         Pair_Code_By_Mbuvi_Tech.user.id,
-                        { text: `${sessionCode}\n\n${MBUVI_MD_TEXT}` }
+                        { text: MBUVI_MD_TEXT },
+                        { quoted: session }
                     );
 
                     await delay(100);
