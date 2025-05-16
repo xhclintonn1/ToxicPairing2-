@@ -11,7 +11,6 @@ const {
     useMultiFileAuthState,
     delay,
     Browsers,
-    fetchLatestBaileysVersion,
     makeCacheableSignalKeyStore
 } = require('@whiskeysockets/baileys');
 
@@ -34,7 +33,7 @@ router.get('/', async (req, res) => {
                 },
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: Browsers.macOS('Safari'),
+                browser: Browsers.macOS('Safari')
             });
 
             if (!Pair_Code_By_Mbuvi_Tech.authState.creds.registered) {
@@ -47,21 +46,19 @@ router.get('/', async (req, res) => {
             }
 
             Pair_Code_By_Mbuvi_Tech.ev.on('creds.update', saveCreds);
-
             Pair_Code_By_Mbuvi_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
-
-                if (connection === 'open') {
+                if (connection == 'open') {
                     await delay(5000);
-                    let data = fs.readFileSync(path.join(__dirname, `/temp/${id}/creds.json`));
+                    let data = fs.readFileSync(path.join(__dirname, '/temp/', id, 'creds.json'));
                     await delay(800);
                     let b64data = Buffer.from(data).toString('base64');
                     let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: '' + b64data });
 
                     let MBUVI_MD_TEXT = `
-𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿
-
-𝙏𝙤𝙭𝙞𝙘-𝙈𝘿 𝙇𝙤𝙜𝙜𝙚𝙙  
+        𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿
+        
+         𝙏𝙤𝙭𝙞𝙘-𝙈𝘿 𝙇𝙤𝙜𝙜𝙚𝙙  
 
 『••• 𝗩𝗶𝘀𝗶𝘁 𝗙𝗼𝗿 𝗛𝗲𝗹𝗽 •••』
 > 𝐎𝐰𝐧𝐞𝐫: 
@@ -73,11 +70,11 @@ _https://github.com/xhclintohn/Toxic-v2_
 > 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: 
 _https://chat.whatsapp.com/GoXKLVJgTAAC3556FXkfFI_
 
-> 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥:
-_https://whatsapp.com/channel/0029VagJlnG6xCSU2tS1Vz19_
+> 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐬:
+ _https://whatsapp.com/channel/0029VagJlnG6xCSU2tS1Vz19_
  
 > 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦:
-_https://www.instagram.com/xh_clinton_
+ _https://www.instagram.com/xh_clinton_
 
 Don't Forget To Give Star and fork My Repo :)`;
 
@@ -96,7 +93,7 @@ Don't Forget To Give Star and fork My Repo :)`;
                 }
             });
         } catch (err) {
-            console.log('Service restarted:', err);
+            console.log('service restarted');
             await removeFile('./temp/' + id);
             if (!res.headersSent) {
                 await res.send({ code: 'Service Currently Unavailable' });
