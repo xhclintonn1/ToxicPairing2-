@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pair Code</title>
+  <title>Toxic MD Pairing Code</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     body {
@@ -12,207 +12,201 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      background-color: black;
-      font-family: Arial, sans-serif;
+      background-color: #0a0f1c; /* Dark blue background */
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #e0e7ff; /* Light text for contrast */
     }
 
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
+      opacity: 0; /* Start hidden for fade-in */
+      animation: fadeIn 1.5s ease-in-out forwards; /* Fade-in animation */
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     .box {
-      width: 300px;
-      height: 320px;
-      padding: 20px;
-      position: relative;
+      width: 320px;
+      padding: 30px;
       text-align: center;
-      background-color: rgb(0, 0, 0);
-      opacity:0.8;
-      border-radius: 10px;
-      transform: perspective(1000px) rotateY(0deg);
-      box-shadow: 0 0 20px rgba(250, 249, 249, 0.7);
-      position: relative;
+      background: linear-gradient(145deg, #1e2a44, #141a2f); /* Subtle dark blue gradient */
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); /* Soft shadow for premium feel */
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
     }
 
-    #text {
-      color: #f6f5f5;
+    #text h3 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #a5b4fc; /* Light indigo for heading */
     }
 
-    .input-container input {
-      color: #f1eaea;
-    }
-
-    .centered-text {
-      color: #e9e4e4;
+    #text h6 {
+      margin: 8px 0;
+      font-size: 0.9rem;
+      color: #d1d5db; /* Light gray for subtext */
     }
 
     .input-container {
       display: flex;
-      background: rgb(10, 10, 10);
-      border-radius: 1rem;
-      background: black;
-      box-shadow: black;
-      padding: 0.3rem;
-      gap: 0.3rem;
-      max-width: 300px;
-      width: 100%;
+      gap: 10px;
+      margin: 20px 0;
     }
 
     .input-container input {
-      border-radius: 0.8rem 0 0 0.8rem;
-      background: #e8e8e8;
-      box-shadow: inset 13px 13px 10px #dcdcdc, inset -13px -13px 10px #f4f4f4;
-      width: 100%;
-      flex-basis: 75%;
-      padding: 1rem;
+      flex: 1;
+      padding: 12px;
       border: none;
-      border-left: 2px solid #ecf2f8;
-      color: #000000;
-      transition: all 0.2s ease-in-out;
+      border-radius: 8px;
+      background: #2a344d; /* Darker input background */
+      color: #e0e7ff;
+      font-size: 1rem;
+      transition: background 0.3s ease;
     }
 
     .input-container input:focus {
-      border-left: 2px solid #ecf1f6;
       outline: none;
-      box-shadow: inset 13px 13px 10px #f0f2f3, inset -13px -13px 10px #f4f4f4;
+      background: #374267; /* Slightly lighter on focus */
     }
 
     .input-container button {
-      flex-basis: 15%;
-      padding: 1rem;
-      background: #5935ac;
-      font-weight: 700;
-      letter-spacing: 0.3rem;
-      text-transform: uppercase;
+      padding: 12px 20px;
+      background: #4f46e5; /* Indigo button */
       color: white;
       border: none;
-      width: 90%;
-      border-radius: 0 1rem 1rem 0;
-      transition: all 0.2s ease-in-out;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
     .input-container button:hover {
-      background: linear-gradient(135deg, #c01736 0%, #8b17b6 100%);
+      background: #6366f1; /* Lighter indigo on hover */
     }
 
-    @media (max-width: 500px) {
-      .input-container {
-        flex-direction: column;
-      }
-
-      .input-container input {
-        border-radius: 0.8rem;
-      }
-
-      .input-container button {
-        padding: 0.4rem;
-        border-radius: 0.8rem;
-      }
+    #pair {
+      margin-top: 20px;
     }
 
-    .centered-text {
-      text-align: center;
+    #copy {
+      cursor: pointer;
+      color: #f87171; /* Red for code label */
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    #copy span {
+      color: #ffffff; /* White for code value */
+    }
+
+    #copy-instruction {
+      display: none;
+      color: #9ca3af; /* Gray for instruction */
+      font-size: 0.85rem;
+      margin-top: 10px;
     }
 
     @media (max-width: 500px) {
       .box {
-        width: 90%; 
-      }
-    }
-
-    @media (max-width: 500px) {
-      .input-container input {
-        border-radius: 0.8rem;
-        width: 80%; 
+        width: 90%;
+        padding: 20px;
       }
 
+      .input-container {
+        flex-direction: column;
+      }
+
+      .input-container input,
       .input-container button {
-        padding: 1rem;
-        border-radius: 0.9rem;
-        width: 100%; 
+        width: 100%;
+        border-radius: 8px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="main">
-      <div class="box" id="box">
-        <div id="text">
-          <i class="fa fa-user"></i>
-          <p>
-            <h3 class="centered-text">Toxic MD PAIRING CODE</h3>
-            <br>
-            <h6>Toxic Tech</h6>
-            <h6>Enter Your Number with Country Code.</h6>
-            <div class="input-container">
-              <input placeholder="25473534xxx" type="number" id="number" placeholder="Enter your Phone Pumber with Country Code" name="">
-              <button id="submit">Submit</button>
-            </div>
-            
-            <a id="waiting-message" class="centered-text" style="display: none;">Please wait a while</a>
-            <br>
-            <br>
-            <main id="pair"></main>
-          </p>
+    <div class="box" id="box">
+      <div id="text">
+        <i class="fa fa-user" style="color: #a5b4fc;"></i>
+        <h3>Toxic MD Pairing Code</h3>
+        <h6>Toxic Tech</h6>
+        <h6>Enter your number with only country code</h6>
+        <div class="input-container">
+          <input placeholder="25473534xxxx" type="text" id="number" name="">
+          <button id="submit">Submit</button>
         </div>
+        <main id="pair"></main>
+        <p id="copy-instruction">Tap the code to copy</p>
       </div>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
   <script>
-    let a = document.getElementById("pair");
-    let b = document.getElementById("submit");
-    let c = document.getElementById("number");
-    let box = document.getElementById("box");
+    const pair = document.getElementById("pair");
+    const submitBtn = document.getElementById("submit");
+    const numberInput = document.getElementById("number");
+    const copyInstruction = document.getElementById("copy-instruction");
 
-    async function Copy() {
-      let text = document.getElementById("copy").innerText;
-      let obj = document.getElementById("copy");
-      await navigator.clipboard.writeText(obj.innerText.replace('CODE: ', ''));
-      obj.innerText = "COPIED";
-      obj.style = "color:blue;font-weight:bold";
-      obj.size = "5";
+    async function copyCode() {
+      const codeElement = document.getElementById("copy");
+      const codeText = codeElement.innerText.replace("CODE: ", "");
+      await navigator.clipboard.writeText(codeText);
+      const originalText = codeElement.innerText;
+      codeElement.innerText = "COPIED!";
+      codeElement.style.color = "#4f46e5"; /* Indigo for copied state */
       setTimeout(() => {
-        obj.innerText = text;
-        obj.style = "color:white;font-weight-bold";
-        obj.size = "5";
-      }, 500);
+        codeElement.innerText = originalText;
+        codeElement.style.color = "#f87171"; /* Back to red */
+      }, 1000);
     }
 
-    b.addEventListener("click", async (e) => {
+    submitBtn.addEventListener("click", async (e) => {
       e.preventDefault();
-      if (!c.value) {
-        a.innerHTML = '<a style="color:white;font-weight:bold">Enter your WhatsApp number with Country Code</a><br><br>';
-      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
-        a.innerHTML = '<a style="color:green;font-weight:bold">Invalid Number</a><br><br>';
-      } else {
-        const Mbuvi_Tech = c.value.replace(/[^0-9]/g, "");
-        let bb = "";
-        let bbc = "";
-        const cc = Mbuvi_Tech.split('');
-        cc.map(a => {
-          bbc += a;
-          if (bbc.length == 3) {
-            bb += " " + a;
-          } else if (bbc.length == 8) {
-            bb += " " + a;
-          } else {
-            bb += a;
-          }
-        });
-        c.type = "text";
-        c.value = "+" + bb;
-        c.style = "color:black;font-size:20px";
-        a.innerHTML = '<a style="color:white;font-weight:bold">Please Wait...</a><br><br>';
-        let { data } = await axios(`/code?number=${Mbuvi_Tech}`);
-        let code = data.code || "Service Unavailable";
-        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:red;font-weight:bold" size="5">CODE: <span style="color:white;font-weight:bold">' + code + '</span></font><br><br><br>';
+      pair.innerHTML = "";
+      copyInstruction.style.display = "none";
+
+      if (!numberInput.value) {
+        pair.innerHTML = '<p style="color:#f87171;font-weight:bold">Enter your WhatsApp number with country code</p>';
+        return;
+      }
+
+      const cleanedNumber = numberInput.value.replace(/[^0-9]/g, "");
+      if (cleanedNumber.length < 11) {
+        pair.innerHTML = '<p style="color:#f87171;font-weight:bold">Invalid Number</p>';
+        return;
+      }
+
+      // Format number for display
+      let formattedNumber = "";
+      let temp = "";
+      const digits = cleanedNumber.split("");
+      digits.forEach((digit, index) => {
+        temp += digit;
+        if (temp.length === 3 || temp.length === 8) {
+          formattedNumber += " " + digit;
+        } else {
+          formattedNumber += digit;
+        }
+      });
+      numberInput.value = "+" + formattedNumber;
+      numberInput.style.color = "#e0e7ff";
+
+      pair.innerHTML = '<p style="color:#e0e7ff;font-weight:bold">Please Wait...</p>';
+      try {
+        const { data } = await axios(`/pair?number=${cleanedNumber}`);
+        const code = data.code || "Service Unavailable";
+        pair.innerHTML = `<p id="copy" onclick="copyCode()" style="cursor:pointer">CODE: <span>${code}</span></p>`;
+        copyInstruction.style.display = "block"; // Show copy instruction
+      } catch (error) {
+        pair.innerHTML = '<p style="color:#f87171;font-weight:bold">Service Unavailable</p>';
       }
     });
   </script>
 </body>
-                              </html>
-  
+</html>

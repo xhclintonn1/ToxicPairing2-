@@ -1,12 +1,12 @@
 {
     "description": "Toxic-sessions",
-    "main": "./mbuvi.js",
+    "main": "./clint.js",
   "engines" : { 
     "npm" : ">=9.7.2",
     "node" : ">=20.0.0"
     },
     "scripts": {
-    "start": "node mbuvi.js"
+    "start": "node clint.js"
   },
   "author": "Toxic Tech",
   "license": "GPL-3.0 license",

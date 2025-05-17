@@ -8,7 +8,7 @@ const fs = require('fs');
 let router = express.Router()
 const pino = require("pino");
 const {
-	default: Mbuvi_Tech,
+	default: Toxic_Tech,
 	useMultiFileAuthState,
 	jidNormalizedUser,
 	Browsers,
@@ -28,13 +28,13 @@ const {
 } = require("node:fs/promises")
 router.get('/', async (req, res) => {
 	const id = makeid();
-	async function MBUVI_MD_QR_CODE() {
+	async function Toxic_MD_QR_CODE() {
 		const {
 			state,
 			saveCreds
 		} = await useMultiFileAuthState('./temp/' + id)
 		try {
-			let Qr_Code_By_Mbuvi_Tech = Mbuvi_Tech({
+			let Qr_Code_By_Toxic_Tech = Toxic_Tech({
 				auth: state,
 				printQRInTerminal: false,
 				logger: pino({
@@ -43,8 +43,8 @@ router.get('/', async (req, res) => {
 				browser: Browsers.macOS("Desktop"),
 			});
 
-			Qr_Code_By_Mbuvi_Tech.ev.on('creds.update', saveCreds)
-			Qr_Code_By_Mbuvi_Tech.ev.on("connection.update", async (s) => {
+			Qr_Code_By_Toxic_Tech.ev.on('creds.update', saveCreds)
+			Qr_Code_By_Toxic_Tech.ev.on("connection.update", async (s) => {
 				const {
 					connection,
 					lastDisconnect,
@@ -56,9 +56,9 @@ router.get('/', async (req, res) => {
 					let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
 					await delay(800);
 				   let b64data = Buffer.from(data).toString('base64');
-				   let session = await Qr_Code_By_Mbuvi_Tech.sendMessage(Qr_Code_By_Mbuvi_Tech.user.id, { text: '' + b64data });
+				   let session = await Qr_Code_By_Toxic_Tech.sendMessage(Qr_Code_By_Toxic_Tech.user.id, { text: '' + b64data });
 	
-				   let MBUVI_MD_TEXT = `
+				   let Toxic_MD_TEXT = `
 𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿*
  *𝙏𝙤𝙭𝙞𝙘 𝙈𝘿 𝙇𝙊𝙂𝙂𝙀𝘿* 
 ______________________________
@@ -71,16 +71,16 @@ ______________________________
 ║❍ 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦: _https://www.instagram.com/mr.xh_clusive
 ______________________________
 Don't Forget To Give Star⭐ To My Repo`
-	 await Qr_Code_By_Mbuvi_Tech.sendMessage(Qr_Code_By_Mbuvi_Tech.user.id,{text:MBUVI_MD_TEXT},{quoted:session})
+	 await Qr_Code_By_Toxic_Tech.sendMessage(Qr_Code_By_Toxic_Tech.user.id,{text:Toxic_MD_TEXT},{quoted:session})
 
 
 
 					await delay(100);
-					await Qr_Code_By_Mbuvi_Tech.ws.close();
+					await Qr_Code_By_Toxic_Tech.ws.close();
 					return await removeFile("temp/" + id);
 				} else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
 					await delay(10000);
-					MBUVI_MD_QR_CODE();
+					Toxic_MD_QR_CODE();
 				}
 			});
 		} catch (err) {
@@ -93,6 +93,6 @@ Don't Forget To Give Star⭐ To My Repo`
 			await removeFile("temp/" + id);
 		}
 	}
-	return await MBUVI_MD_QR_CODE()
+	return await Toxic_MD_QR_CODE()
 });
 module.exports = router
