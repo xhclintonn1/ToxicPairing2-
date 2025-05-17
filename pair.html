@@ -29,7 +29,7 @@
       position: relative;
       text-align: center;
       background-color: rgb(0, 0, 0);
-      opacity:0.8;
+      opacity: 0.8;
       border-radius: 10px;
       transform: perspective(1000px) rotateY(0deg);
       box-shadow: 0 0 20px rgba(250, 249, 249, 0.7);
@@ -84,7 +84,7 @@
       padding: 1rem;
       background: #5935ac;
       font-weight: 700;
-      letter-spacing: 0.3rem;
+      letter-spacing: 0影响到:1px solid #ecf2f8;
       text-transform: uppercase;
       color: white;
       border: none;
@@ -118,20 +118,20 @@
 
     @media (max-width: 500px) {
       .box {
-        width: 90%; 
+        width: 90%;
       }
     }
 
     @media (max-width: 500px) {
       .input-container input {
         border-radius: 0.8rem;
-        width: 80%; 
+        width: 80%;
       }
 
       .input-container button {
         padding: 1rem;
         border-radius: 0.9rem;
-        width: 100%; 
+        width: 100%;
       }
     }
   </style>
@@ -148,10 +148,9 @@
             <h6>Toxic Tech</h6>
             <h6>Enter Your Number with Country Code.</h6>
             <div class="input-container">
-              <input placeholder="25473534xxx" type="number" id="number" placeholder="Enter your Phone Pumber with Country Code" name="">
+              <input placeholder="25473534xxx" type="text" id="number" name="number">
               <button id="submit">Submit</button>
             </div>
-            
             <a id="waiting-message" class="centered-text" style="display: none;">Please wait a while</a>
             <br>
             <br>
@@ -177,43 +176,52 @@
       obj.size = "5";
       setTimeout(() => {
         obj.innerText = text;
-        obj.style = "color:white;font-weight-bold";
+        obj.style = "color:white;font-weight:bold";
         obj.size = "5";
       }, 500);
     }
 
     b.addEventListener("click", async (e) => {
       e.preventDefault();
-      if (!c.value) {
+      a.innerHTML = ''; // Clear previous messages
+      const rawNumber = c.value.trim();
+      const cleanedNumber = rawNumber.replace(/[^0-9]/g, "");
+
+      if (!rawNumber) {
         a.innerHTML = '<a style="color:white;font-weight:bold">Enter your WhatsApp number with Country Code</a><br><br>';
-      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
+        return;
+      }
+
+      if (cleanedNumber.length < 10 || cleanedNumber.length > 15) {
         a.innerHTML = '<a style="color:green;font-weight:bold">Invalid Number</a><br><br>';
-      } else {
-        const Mbuvi_Tech = c.value.replace(/[^0-9]/g, "");
-        let bb = "";
-        let bbc = "";
-        const cc = Mbuvi_Tech.split('');
-        cc.map(a => {
-          bbc += a;
-          if (bbc.length == 3) {
-            bb += " " + a;
-          } else if (bbc.length == 8) {
-            bb += " " + a;
-          } else {
-            bb += a;
-          }
-        });
-        c.type = "text";
-        c.value = "+" + bb;
-        c.style = "color:black;font-size:20px";
-        a.innerHTML = '<a style="color:white;font-weight:bold">Please Wait...</a><br><br>';
-        let { data } = await axios(`/code?number=${Mbuvi_Tech}`);
-        let code = data.code || "Service Unavailable";
-        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:red;font-weight:bold" size="5">CODE: <span style="color:white;font-weight:bold">' + code + '</span></font><br><br><br>';
+        return;
+      }
+
+      // Format number for display (e.g., +254 735 34xxxx)
+      let formattedNumber = '+' + cleanedNumber;
+      if (cleanedNumber.length >= 3) {
+        formattedNumber = '+' + cleanedNumber.slice(0, 3) + ' ' + cleanedNumber.slice(3);
+        if (cleanedNumber.length >= 6) {
+          formattedNumber = '+' + cleanedNumber.slice(0, 3) + ' ' + cleanedNumber.slice(3, 6) + ' ' + cleanedNumber.slice(6);
+        }
+      }
+      c.type = "text";
+      c.value = formattedNumber;
+      c.style = "color:black;font-size:20px";
+
+      a.innerHTML = '<a style="color:white;font-weight:bold">Please Wait...</a><br><br>';
+      try {
+        const { data } = await axios.get(`/pair?number=${cleanedNumber}`);
+        if (data.code) {
+          a.innerHTML = `<font id="copy" onclick="Copy()" style="color:red;font-weight:bold" size="5">CODE: <span style="color:white;font-weight:bold">${data.code}</span></font><br><br><br>`;
+        } else {
+          a.innerHTML = '<a style="color:red;font-weight:bold">Error: Unable to generate pairing code</a><br><br>';
+        }
+      } catch (err) {
+        console.error('Axios error:', err);
+        a.innerHTML = `<a style="color:red;font-weight:bold">Error: ${err.response?.data?.code || 'Service Unavailable'}</a><br><br>`;
       }
     });
   </script>
 </body>
-                              </html>
-
-  
+</html>
