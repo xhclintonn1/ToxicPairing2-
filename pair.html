@@ -12,95 +12,96 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      background: linear-gradient(180deg, #0a1126 0%, #0b1738 100%); /* Darker blue gradient background */
+      background: linear-gradient(180deg, #070e20 0%, #0a1433 100%);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      color: #d1dae6; /* Soft light blue-gray text */
-      overflow: hidden; /* Prevent scrollbars */
+      color: #b8c4d9;
+      overflow: hidden;
     }
 
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: fadeIn 2s ease-out forwards; /* Smoother, longer fade-in */
-      opacity: 0; /* Start invisible */
+      animation: fadeIn 2s ease-out forwards;
+      opacity: 0;
+      width: 100%;
+      max-width: 400px;
+      padding: 0 16px;
+      box-sizing: border-box;
     }
 
     .box {
-      width: 340px;
+      width: 100%;
+      max-width: 340px;
       padding: 24px;
       text-align: center;
-      background: linear-gradient(145deg, #0f1c4a, #1a2a6c); /* Deep, luxurious blue gradient */
+      background: linear-gradient(145deg, #0b153b, #142057);
       border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(59, 130, 246, 0.1); /* Glow and shadow */
-      position: relative;
-      backdrop-filter: blur(8px); /* Glassmorphism effect */
-      border: 1px solid rgba(59, 130, 246, 0.2); /* Subtle blue border */
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(29, 78, 216, 0.1);
+      border: 1px solid rgba(29, 78, 216, 0.15);
+      transition: transform 0.3s ease;
     }
 
     .box:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(59, 130, 246, 0.2);
+      transform: translateY(-6px);
     }
 
     #text {
-      color: #d1dae6;
+      color: #b8c4d9;
     }
 
     .centered-text {
-      color: #e6f1ff;
+      color: #d1dae6;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       margin-bottom: 1.5rem;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
     }
 
     h6 {
       font-size: 0.85rem;
-      color: #93b1ff; /* Softer blue for secondary text */
+      color: #7a96ff;
       margin: 0.6rem 0;
       font-weight: 400;
-      opacity: 0.9;
+      opacity: 0.85;
     }
 
     .input-container {
       display: flex;
-      background: #0d1a40; /* Ultra-dark blue for input container */
+      background: #09102f;
       border-radius: 12px;
       padding: 0.5rem;
       gap: 0.5rem;
-      max-width: 320px;
       width: 100%;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(59, 130, 246, 0.15);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(29, 78, 216, 0.1);
     }
 
     .input-container input {
       border-radius: 8px 0 0 8px;
-      background: #e6f1ff;
+      background: #d1dae6;
       width: 100%;
       flex-basis: 70%;
       padding: 0.9rem;
       border: none;
-      color: #0a1126; /* Darkest blue text */
+      color: #070e20;
       font-weight: 500;
       transition: all 0.3s ease;
     }
 
     .input-container input:focus {
       outline: none;
-      box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
-      background: #ffffff;
+      box-shadow: 0 0 8px rgba(29, 78, 216, 0.5);
+      background: #e6f1ff;
     }
 
     .input-container button {
       flex-basis: 30%;
       padding: 0.9rem;
-      background: linear-gradient(135deg, #3b82f6, #1e40af); /* Vibrant blue gradient */
+      background: #1d4ed8;
       font-weight: 600;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       text-transform: uppercase;
       color: #ffffff;
       border: none;
@@ -110,57 +111,83 @@
       overflow: hidden;
     }
 
-    sylius:button:hover {
-      background: linear-gradient(135deg, #1e40af, #3b82f6);
-      transform: scale(1.08);
+    .input-container button:hover {
+      background: #2563eb;
+      box-shadow: 0 0 12px rgba(29, 78, 216, 0.4);
     }
 
-    .input-container button::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.4s ease, height 0.4s ease;
-    }
-
-    .input-container button:hover::after {
-      width: 200%;
-      height: 200%;
-    }
-
-    /* Fade-in animation keyframes */
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* Subtle background animation */
-    body::before {
+    .input-container button::before {
       content: '';
       position: absolute;
       top: 0;
-      left: 0;
+      left: -100%;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-      animation: pulse 10s infinite ease-in-out;
-      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 0.6; }
+    .input-container button:hover::before {
+      left: 100%;
     }
 
-    /* Responsive design */
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    #waiting-message {
+      color: #7a96ff;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    #pair {
+      position: relative;
+    }
+
+    #pair a, #pair font {
+      color: #7a96ff;
+      transition: color 0.3s ease;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    #pair a:hover, #pair font:hover {
+      color: #1d4ed8;
+    }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .copy-tip {
+      color: #7a96ff;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      opacity: 0;
+      animation: fadeInTip 1s ease-out 0.5s forwards;
+    }
+
+    @keyframes fadeInTip {
+      0% { opacity: 0; }
+      100% { opacity: 0.85; }
+    }
+
+    .fa-user {
+      font-size: 1.6rem;
+      color: #1d4ed8;
+      margin-bottom: 1rem;
+    }
+
     @media (max-width: 500px) {
+      .container {
+        padding: 0 12px;
+      }
+
       .box {
-        width: 90%;
+        width: 100%;
+        max-width: none;
       }
 
       .input-container {
@@ -177,34 +204,10 @@
         width: 100%;
         padding: 1rem;
       }
-    }
 
-    /* Additional premium styling */
-    #waiting-message {
-      color: #93b1ff;
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    #pair a, #pair font {
-      color: #93b1ff;
-      transition: color 0.3s ease;
-    }
-
-    #pair a:hover, #pair font:hover {
-      color: #3b82f6;
-    }
-
-    .fa-user {
-      font-size: 1.8rem;
-      color: #3b82f6;
-      margin-bottom: 1rem;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      .centered-text {
+        font-size: 1.3rem;
+      }
     }
   </style>
 </head>
@@ -243,11 +246,11 @@
       let obj = document.getElementById("copy");
       await navigator.clipboard.writeText(obj.innerText.replace('CODE: ', ''));
       obj.innerText = "COPIED";
-      obj.style = "color:#3b82f6;font-weight:bold";
+      obj.style = "color:#1d4ed8;font-weight:bold";
       obj.size = "5";
       setTimeout(() => {
         obj.innerText = text;
-        obj.style = "color:#93b1ff;font-weight:bold";
+        obj.style = "color:#7a96ff;font-weight:bold";
         obj.size = "5";
       }, 500);
     }
@@ -255,7 +258,7 @@
     b.addEventListener("click", async (e) => {
       e.preventDefault();
       if (!c.value) {
-        a.innerHTML = '<a style="color:#d1dae6;font-weight:bold">Enter your WhatsApp number with Country Code</a><br><br>';
+        a.innerHTML = '<a style="color:#b8c4d9;font-weight:bold">Enter your WhatsApp number with Country Code</a><br><br>';
       } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
         a.innerHTML = '<a style="color:#22c55e;font-weight:bold">Invalid Number</a><br><br>';
       } else {
@@ -275,11 +278,11 @@
         });
         c.type = "text";
         c.value = "+" + bb;
-        c.style = "color:#0a1126;font-size:20px";
-        a.innerHTML = '<a style="color:#d1dae6;font-weight:bold">Please Wait...</a><br><br>';
+        c.style = "color:#070e20;font-size:20px";
+        a.innerHTML = '<a style="color:#b8c4d9;font-weight:bold">Please Wait...</a><br><br>';
         let { data } = await axios(`/code?number=${Toxic_Tech}`);
         let code = data.code || "Service Unavailable";
-        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:#ef4444;font-weight:bold" size="5">CODE: <span style="color:#d1dae6;font-weight:bold">' + code + '</span></font><br><br><br>';
+        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:#dc2626;font-weight:bold" size="5">CODE: <span style="color:#b8c4d9;font-weight:bold">' + code + '</span></font><br><div class="copy-tip">Tap code to copy</div><br>';
       }
     });
   </script>
