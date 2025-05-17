@@ -1,7 +1,3 @@
-// Fixed Pair code by 𝐱𝐡_𝐜𝐥𝐢𝐧𝐭𝐨𝐧🚨
-
-
-
 const PastebinAPI = require('pastebin-js');
 const pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL');
 const { makeid } = require('./id');
@@ -36,7 +32,7 @@ router.get('/', async (req, res) => {
                 },
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: Browsers.macOS('Chrome') // Updated ✅
+                browser: Browsers.macOS('Chrome')
             });
 
             if (!Pair_Code_By_Toxic_Tech.authState.creds.registered) {
