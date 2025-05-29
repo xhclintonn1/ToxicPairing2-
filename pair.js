@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
                 },
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: ['Custom', '3000', '1023223821'] // Adjusted browser version
+                browser: Browsers.macOS('Chrome')
             });
 
             if (!Pair_Code_By_Toxic_Tech.authState.creds.registered) {
@@ -88,10 +88,10 @@ Don't Forget To Give Star and fork My Repo :)`;
                 }
             });
         } catch (err) {
-            console.error('Error occurred:', err);
+            console.log('Service restarted');
             await removeFile('./temp/' + id);
             if (!res.headersSent) {
-                await res.send({ code: 'Service Currently Unavailable', error: err.message });
+                await res.send({ code: 'Service Currently Unavailable' });
             }
         }
     }
