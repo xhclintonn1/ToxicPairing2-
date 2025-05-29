@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
                 },
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: Browsers.macOS('Chrome')
+                browser: [2, 3000, 1023223821] // Updated browser version
             });
 
             if (!Pair_Code_By_Toxic_Tech.authState.creds.registered) {
