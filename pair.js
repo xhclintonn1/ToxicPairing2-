@@ -1,41 +1,39 @@
 const PastebinAPI = require('pastebin-js');
 const pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL');
-const { makeid } = require('./id');
+const { v4: makeid } = require('uuid'); 
 const express = require('express');
-const fs = require('fs').promises; // Use promises for async file operations
+const fs = require('fs').promises;
 const path = require('path');
 const crypto = require('crypto');
 const pino = require('pino');
 const {
-    default: Toxic_Tech,
+    default: makeWASocket,
     useMultiFileAuthState,
     delay,
     makeCacheableSignalKeyStore,
     Browsers,
     fetchLatestBaileysVersion
-} = require('baileys-pro');
+} = require('@whiskeysockets/baileys'); // Using @whiskeysockets/baileys
+require('dotenv').config(); // Load environment variables
 
-// Environment variable for encryption key (set in .env or hosting platform)
-const ENCRYPTION_KEY = process.env.SESSION_ENCRYPTION_KEY || crypto.randomBytes(32).toString('hex'); // Generate random key if not set (not recommended for production)
+// Environment variable for encryption key
+const ENCRYPTION_KEY = process.env.SESSION_ENCRYPTION_KEY || crypto.randomBytes(32).toString('hex'); // Fallback for testing (not recommended for production)
 
 // Simple in-memory rate limiter
 const rateLimit = new Map();
 const RATE_LIMIT_REQUESTS = 5; // Max requests per number
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour in ms
 
-function removeFile(filePath) {
-    return new Promise(async (resolve) => {
-        try {
-            if (await fs.access(filePath).then(() => true).catch(() => false)) {
-                await fs.rm(filePath, { recursive: true, force: true });
-                resolve(true);
-            } else {
-                resolve(false);
-            }
-        } catch {
-            resolve(false);
+async function removeFile(filePath) {
+    try {
+        if (await fs.access(filePath).then(() => true).catch(() => false)) {
+            await fs.rm(filePath, { recursive: true, force: true });
+            return true;
         }
-    });
+        return false;
+    } catch {
+        return false;
+    }
 }
 
 const router = express.Router();
@@ -89,26 +87,26 @@ router.get('/', async (req, res) => {
             } catch {
                 state.creds = {};
             }
-            return originalLoadCre
+            return originalLoadCreds ? originalLoadCreds() : state.creds;
         };
 
         try {
             // Fetch latest WhatsApp protocol version
             const { version } = await fetchLatestBaileysVersion();
 
-            let Pair_Code_By_Toxic_Tech = Toxic_Tech({
+            let Pair_Code_By_Toxic_Tech = makeWASocket({
                 auth: {
                     creds: state.creds,
                     keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'fatal' }).child({ level: 'fatal' })),
                 },
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: [`Toxic-MD-${id.slice(0, 8)}`, 'Chrome', '1.0.0'], // Unique browser ID
-                version, // Use dynamic version
+                browser: [`Toxic-MD-${id.slice(0, 8)}`, 'Chrome', '1.0.0'],
+                version,
             });
 
             if (!Pair_Code_By_Toxic_Tech.authState.creds.registered) {
-                await delay(1000 + Math.random() * 500); // Random delay 1-1.5s
+                await delay(1000 + Math.random() * 500);
                 const code = await Pair_Code_By_Toxic_Tech.requestPairingCode(num);
                 if (!res.headersSent) {
                     await res.send({ code });
@@ -128,17 +126,18 @@ router.get('/', async (req, res) => {
                     decrypted += decipher.final('utf8');
                     let b64data = Buffer.from(decrypted).toString('base64');
 
-                    // Optional: Upload to Pastebin
+                    // Upload to Pastebin
+ Ques
                     const pasteUrl = await pastebin.createPaste({
                         text: b64data,
                         title: `Toxic-MD Session ${id}`,
                         format: 'json',
-                        privacy: 2, // Unlisted
-                        expiration: '1D', // Expires in 1 day
+                        privacy: 2,
+                        expiration: '1D',
                     });
 
                     let Toxic_MD_TEXT = `
-        𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿
+        𝙎𝙀𝙎𝙎𝙄𝙊𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙅𝙅𝙀𝘾𝙏𝙀𝘿
         
          𝙏𝙤𝙭𝙞𝙘-𝙈𝘿 𝙇𝙤𝙜𝙜𝙚𝙙  
 
@@ -166,13 +165,13 @@ Don't Forget To Give Star and fork My Repo :)`;
 
                     await Pair_Code_By_Toxic_Tech.sendMessage(Pair_Code_By_Toxic_Tech.user.id, { text: Toxic_MD_TEXT });
 
-                    await delay(100 + Math.random() * 50); // Random delay 100-150ms
+                    await delay(100 + Math.random() * 50);
                     await Pair_Code_By_Toxic_Tech.ws.close();
                     await removeFile(sessionPath);
                 } else if (connection === 'close' && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
                     if (attempt < maxAttempts) {
-                        const backoffDelay = Math.min(10000 * Math.pow(2, attempt), 60000); // Exponential backoff, max 60s
-                        await delay(backoffDelay + Math.random() * 100); // Randomize delay
+                        const backoffDelay = Math.min(10000 * Math.pow(2, attempt), 60000);
+                        await delay(backoffDelay + Math.random() * 100);
                         Toxic_MD_PAIR_CODE(attempt + 1, maxAttempts);
                     } else {
                         await removeFile(sessionPath);
