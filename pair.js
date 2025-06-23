@@ -48,34 +48,37 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Toxic_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
-                    await delay(50000); // Added delay
+                    // Send initial connection message with a small delay
+                    await delay(1000);
+                    await Pair_Code_By_Toxic_Tech.sendMessage(Pair_Code_By_Toxic_Tech.user.id, { text: `
+◈━━━━━━━━━━━◈
+│❒ Hello! 👋 You're now connected to Toxic-MD.
+│❒ Please wait a moment while we generate your session ID. It will be sent shortly... 🙂
+│❒
+◈━━━━━━━━━━━◈
+` });
+                    await delay(50000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
-                    await delay(8000); // Added delay
+                    await delay(8000);
                     let b64data = Buffer.from(data).toString('base64');
                     let session = await Pair_Code_By_Toxic_Tech.sendMessage(Pair_Code_By_Toxic_Tech.user.id, { text: '' + b64data });
 
                     let Toxic_MD_TEXT = `
-        𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿
-        
-         𝙏𝙤𝙭𝙞𝙘-𝙈𝘿 𝙇𝙤𝙜𝙜𝙚𝙙  
-
+◈━━━━━━━━━━━◈
+│❒ 𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿
+│❒ The long code above is your **Session ID**. Please copy and store it safely, as you'll need it to deploy your Toxic-MD bot! 🔐
+│❒ 𝙏𝙤𝙭𝙞𝙘-𝙈𝘿 𝙇𝙤𝙜𝙜𝙚𝙙 ✅
+│❒
+│❒ Need help? Reach out to us:
 『••• 𝗩𝗶𝘀𝗶𝘁 𝗙𝗼𝗿 𝗛𝗲𝗹𝗽 •••』
-> 𝐎𝐰𝐧𝐞𝐫: 
-_https://wa.me/254735342808_
-
-> 𝐑𝐞𝐩𝐨: 
-_https://github.com/xhclintohn/Toxic-v2_
-
-> 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: 
-_https://chat.whatsapp.com/GoXKLVJgTAAC3556FXkfFI_
-
-> 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥:
- _https://whatsapp.com/channel/0029VagJlnG6xCSU2tS1Vz19_
- 
-> 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦:
- _https://www.instagram.com/xh_clinton_
-
-Don't Forget To Give Star and fork My Repo :)`;
+> 𝐎𝐰𝐧𝐞𝐫: _https://wa.me/254735342808_
+> 𝐑𝐞𝐩𝐨: _https://github.com/xhclintohn/Toxic-v2_
+> 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: _https://chat.whatsapp.com/GoXKLVJgTAAC3556FXkfFI_
+> 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥: _https://whatsapp.com/channel/0029VagJlnG6xCSU2tS1Vz19_
+> 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦: _https://www.instagram.com/xh_clinton_
+│❒
+│❒ Don't forget to give a ⭐ to our repo and fork it to stay updated! :)
+◈━━━━━━━━━━━◈`;
 
                     await Pair_Code_By_Toxic_Tech.sendMessage(Pair_Code_By_Toxic_Tech.user.id, { text: Toxic_MD_TEXT }, { quoted: session });
 
