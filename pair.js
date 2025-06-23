@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
             if (!Pair_Code_By_Toxic_Tech.authState.creds.registered) {
                 await delay(1500);
                 num = num.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                // Validate phone number (basic check for length and format)
+                // Validate phone number
                 if (!num || num.length < 10 || num.length > 15) {
                     console.log(`Invalid phone number: ${num}`);
                     if (!res.headersSent) {
@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
                     return;
                 }
 
-                // Retry mechanism for pairing code request
+                // Retry mechanism for pairing code
                 let code;
                 let attempts = 0;
                 const maxAttempts = 3;
@@ -66,7 +66,7 @@ router.get('/', async (req, res) => {
                             }
                             return;
                         }
-                        await delay(2000); // Wait before retrying
+                        await delay(2000);
                     }
                 }
 
@@ -79,15 +79,6 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Toxic_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
-                    // Send initial connection message
-                    await Pair_Code_By_Toxic_Tech.sendMessage(Pair_Code_By_Toxic_Tech.user.id, { text: `
-◈━━━━━━━━━━━◈
-│❒ Hello! 👋 You're now connected to Toxic-MD.
-│❒ We're generating your session ID. This may take a moment due to WhatsApp processing. Please wait... 🙂
-│❒ If the pairing code doesn't work, try requesting a new one or check your network connection.
-│❒
-◈━━━━━━━━━━━◈
-` });
                     await delay(50000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
                     await delay(8000);
@@ -101,7 +92,7 @@ router.get('/', async (req, res) => {
 │❒ 𝙏𝙤𝙭𝙞𝙘-𝙈𝘿 𝙇𝙤𝙜𝙜𝙚𝙙 ✅
 │❒
 │❒ Need help? Reach out to us:
-『••• 𝗩𝗶𝘀𝗶𝘁 𝗙𝗼𝗿 𝗛𝗲𝗹𝗽 •••』
+『••• �_V𝗶𝘀𝗶𝘁 𝗙𝗼𝗿 𝗛𝗲𝗹𝗽 •••』
 > 𝐎𝐰𝐧𝐞𝐫: _https://wa.me/254735342808_
 > 𝐑𝐞𝐩𝐨: _https://github.com/xhclintohn/Toxic-v2_
 > 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: _https://chat.whatsapp.com/GoXKLVJgTAAC3556FXkfFI_
