@@ -1,16 +1,17 @@
 const PastebinAPI = require('pastebin-js');
 const pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL');
 const { makeid } = require('./id');
-const QRCode = require('qrcode');
 const express = require('express');
-const fs = require('fs').promises; // Built-in Node.js module
-const path = require('path'); // Built-in Node.js module
+const fs = require('fs').promises;
+const path = require('path');
 const pino = require('pino');
 const {
     default: makeWASocket,
-    useSingleFileAuthState,
+    useMultiFileAuthState,
     delay,
-    fetchLatestBaileysVersion
+    fetchLatestBaileysVersion,
+    makeCacheableSignalKeyStore,
+    proto
 } = require('baileys');
 const NodeCache = require('node-cache');
 
@@ -25,9 +26,11 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     const id = makeid();
-    async function Toxic_MD_QR_CODE() {
-        const sessionPath = path.join(__dirname, 'temp', id, 'creds.json');
-        const { state, saveState } = await useSingleFileAuthState(sessionPath);
+    let num = req.query.number;
+
+    async function Toxic_MD_PAIR_CODE() {
+        const sessionPath = path.join(__dirname, 'temp', id);
+        const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
         try {
             const { version } = await fetchLatestBaileysVersion();
 
@@ -36,7 +39,10 @@ router.get('/', async (req, res) => {
                 version,
                 browser: ["Ubuntu", "Chrome", "20.0.04"],
                 printQRInTerminal: false,
-                auth: state,
+                auth: {
+                    creds: state.creds,
+                    keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'silent' }).child({ level: 'silent' })),
+                },
                 connectTimeoutMs: 60000,
                 defaultQueryTimeoutMs: 0,
                 isLatest: true,
@@ -76,52 +82,61 @@ router.get('/', async (req, res) => {
                 syncFullHistory: false
             };
 
-            let Qr_Code_By_Toxic_Tech = makeWASocket(connectionOptions);
+            let Pair_Code_By_Toxic_Tech = makeWASocket(connectionOptions);
 
-            Qr_Code_By_Toxic_Tech.ev.on('creds.update', saveState);
-            Qr_Code_By_Toxic_Tech.ev.on("connection.update", async (s) => {
-                const { connection, lastDisconnect, qr } = s;
-                if (qr) await res.end(await QRCode.toBuffer(qr));
-                if (connection === "open") {
+            if (!Pair_Code_By_Toxic_Tech.authState.creds.registered) {
+                await delay(1500);
+                num = num.replace(/[^0-9]/g, '');
+                const code = await Pair_Code_By_Toxic_Tech.requestPairingCode(num);
+                if (!res.headersSent) {
+                    await res.send({ code });
+                }
+            }
+
+            Pair_Code_By_Toxic_Tech.ev.on('creds.update', saveCreds);
+            Pair_Code_By_Toxic_Tech.ev.on('connection.update', async (s) => {
+                const { connection, lastDisconnect } = s;
+                if (connection === 'open') {
                     await delay(5000);
-                    let data = await fs.readFile(sessionPath);
+                    let data = await fs.readFile(path.join(sessionPath, 'creds.json'));
                     await delay(800);
                     let b64data = Buffer.from(data).toString('base64');
-                    let session = await Qr_Code_By_Toxic_Tech.sendMessage(Qr_Code_By_Toxic_Tech.user.id, { text: '' + b64data });
+                    let session = await Pair_Code_By_Toxic_Tech.sendMessage(Pair_Code_By_Toxic_Tech.user.id, { text: '' + b64data });
 
                     let Toxic_MD_TEXT = `
 𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿
-*𝙏𝙤𝙭𝙞𝙘 𝙈𝘿 𝙇𝙊𝙂𝙂𝙀𝘿* 
+*𝙏𝙤𝙭𝙞𝙘 𝙈𝘿 𝙇𝙊𝙂𝙂𝙀𝘿*
 ______________________________
 ╔════◇
 『••• 𝗩𝗶𝘀𝗶𝘁 𝗙𝗼𝗿 𝗛𝗲𝗹𝗽 •••』
-║❍ 𝐎𝐰𝐧𝐞𝐫: _https://wa.me/254735342808_
-║❍ 𝐑𝐞𝐩𝐨: _https://github.com/xhclintohn/Toxic-MD_
-║❍ 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: _https://chat.whatsapp.com/GoXKLVJgTAAC3556FXkfFI_
-║❍ 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥: _https://whatsapp.com/channel/0029VagJlnG6xCSU2tS1Vz19_
-║❍ 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦: _https://www.instagram.com/mr.xh_clusive
+🎯 | 𝐎𝐰𝐧𝐞𝐫: _https://wa.me/254735342808_
+📚 | 𝐑𝐞𝐩𝐨: _https://github.com/xhclintohn/Toxic-MD_
+👥 | 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: _https://chat.whatsapp.com/GoXKLVJgTAAC3556FXkfFI_
+📢 | 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥: _https://whatsapp.com/channel/0029VagJlnG6xCSU2tS1Vz19_
+📸 | 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦: _https://www.instagram.com/mr.xh_clusive_
 ______________________________
 Don't Forget To Give Star⭐ To My Repo`;
 
-                    await Qr_Code_By_Toxic_Tech.sendMessage(Qr_Code_By_Toxic_Tech.user.id, { text: Toxic_MD_TEXT }, { quoted: session });
+                    await Pair_Code_By_Toxic_Tech.sendMessage(Pair_Code_By_Toxic_Tech.user.id, { text: Toxic_MD_TEXT }, { quoted: session });
 
                     await delay(100);
-                    await Qr_Code_By_Toxic_Tech.ws.close();
-                    await removeFile(path.dirname(sessionPath));
-                } else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
-                    await delay(10000);
-                    Toxic_MD_QR_CODE();
+                    await Pair_Code_By_Toxic_Tech.ws.close();
+                    await removeFile(sessionPath);
+                } else if (connection === 'close' && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
+                    await delay(1000);
+                    Toxic_MD_PAIR_CODE();
                 }
             });
         } catch (err) {
+            console.log('Service error:', err);
+            await removeFile(sessionPath);
             if (!res.headersSent) {
-                await res.json({ code: "Service is Currently Unavailable" });
+                await res.send({ code: 'Service unavailable' });
             }
-            console.log(err);
-            await removeFile(path.dirname(sessionPath));
         }
     }
-    return await Toxic_MD_QR_CODE();
+
+    return await Toxic_MD_PAIR_CODE();
 });
 
 module.exports = router;
