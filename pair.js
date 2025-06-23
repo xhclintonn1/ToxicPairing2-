@@ -13,7 +13,7 @@ const {
     makeCacheableSignalKeyStore,
     Browsers,
     fetchLatestBaileysVersion
-} = require('@whiskeysockets/baileys'); // Using @whiskeysockets/baileys
+} = require('baileys-pro'); // Using @whiskeysockets/baileys
 require('dotenv').config(); // Load environment variables
 
 // Environment variable for encryption key
