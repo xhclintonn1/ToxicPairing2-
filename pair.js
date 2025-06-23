@@ -2,8 +2,8 @@ const PastebinAPI = require('pastebin-js');
 const pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL');
 const { makeid } = require('./id');
 const express = require('express');
-const fs = require('fs').promises; // Built-in Node.js module
-const path = require('path'); // Built-in Node.js module
+const fs = require('fs').promises; 
+const path = require('path'); 
 const pino = require('pino');
 const {
     default: Toxic_Tech,
@@ -20,7 +20,7 @@ function removeFile(FilePath) {
 
 const router = express.Router();
 
-// List of browsers to choose from randomly
+
 const browsers = [
     ['Toxic-MD', 'Chrome', '1.0.0'],
     ['Toxic-MD', 'Firefox', '1.0.0'],
