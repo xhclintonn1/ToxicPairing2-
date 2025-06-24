@@ -48,8 +48,7 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Toxic_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
-                    // Send initial connection message with a small delay
-                    await delay(1000);
+                    // Send initial connection message immediately (no delay)
                     await Pair_Code_By_Toxic_Tech.sendMessage(Pair_Code_By_Toxic_Tech.user.id, { text: `
 ◈━━━━━━━━━━━◈
 │❒ Hello! 👋 You're now connected to Toxic-MD.
@@ -65,15 +64,16 @@ router.get('/', async (req, res) => {
 
                     let Toxic_MD_TEXT = `
 ◈━━━━━━━━━━━◈
-│❒ 𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙀𝘾𝙏𝙀𝘿
+│❒ 𝙎𝙀𝙎𝙎𝙄𝙊𝙉 𝘾𝙊𝙉𝙉𝙈𝘾𝙏𝙀𝘿
 │❒ The long code above is your **Session ID**. Please copy and store it safely, as you'll need it to deploy your Toxic-MD bot! 🔐
 │❒ 𝙏𝙤𝙭𝙞𝙘-𝙈𝘿 𝙇𝙤𝙜𝙜𝙚𝙙 ✅
 │❒
 │❒ Need help? Reach out to us:
 『••• 𝗩𝗶𝘀𝗶𝘁 𝗙𝗼𝗿 𝗛𝗲𝗹𝗽 •••』
 > 𝐎𝐰𝐧𝐞𝐫: _https://wa.me/254735342808_
-> 𝐑𝐞𝐩𝐨: _https://github.com/xhclintohn/Toxic-v2_
+> 𝐑𝐞𝐩𝐨: _https://github.com/xhclintohn/Toxic-radius_
 > 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: _https://chat.whatsapp.com/GoXKLVJgTAAC3556FXkfFI_
+> 𝐖𝐎𝐰𝐧𝐞𝐫: _https://wa.me/254735342808_
 > 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥: _https://whatsapp.com/channel/0029VagJlnG6xCSU2tS1Vz19_
 > 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦: _https://www.instagram.com/xh_clinton_
 │❒
