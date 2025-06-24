@@ -64,7 +64,8 @@ router.get('/', async (req, res) => {
 
                     let Toxic_MD_TEXT = `
           ◈━━━━━━━◈
-      SESSION CONNECTED
+      SESSION CONNECTED ✅
+      
 │❒ The long code above is your **Session ID**. Please copy and store it safely, as you'll need it to deploy your Toxic-MD bot! 🔐
 
 
@@ -84,7 +85,8 @@ router.get('/', async (req, res) => {
 > Instagram:
  _https://www.instagram.com/xh_clinton_
  
- > BotRepo: _https://github.com/xhclintohn/Toxic-MD_
+ > BotRepo: 
+ _https://github.com/xhclintohn/Toxic-MD_
  
 │❒ Don't forget to give a ⭐ to our repo and fork it to stay updated! :)
 ◈━━━━━━━━━━━◈`;
